@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "dof-auth-api-collection",
+		"name": "DOF Authentication API",
+		"description": "Complete collection for testing DOF Authentication API endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": ["{{base_url}}"],
+					"path": ["health"]
+				},
+				"description": "Check if the server is running and healthy"
+			},
+			"response": []
+		},
+		{
+			"name": "API Documentation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": ["{{base_url}}"],
+					"path": [""]
+				},
+				"description": "Get API documentation and available endpoints"
+			},
+			"response": []
+		},
+		{
+			"name": "User Registration",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"John Doe\",\n  \"username\": \"johndoe\",\n  \"password\": \"password123\",\n  \"role\": \"Employee\",\n  \"departmentId\": 1,\n  \"collegeId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "register"]
+				},
+				"description": "Register a new user account"
+			},
+			"response": []
+		},
+		{
+			"name": "User Registration - Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"Admin User\",\n  \"username\": \"adminuser\",\n  \"password\": \"admin123\",\n  \"role\": \"Admin\",\n  \"departmentId\": 1,\n  \"collegeId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "register"]
+				},
+				"description": "Register an admin user account"
+			},
+			"response": []
+		},
+		{
+			"name": "User Registration - Manager",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"Manager User\",\n  \"username\": \"manageruser\",\n  \"password\": \"manager123\",\n  \"role\": \"Manager\",\n  \"departmentId\": 2,\n  \"collegeId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "register"]
+				},
+				"description": "Register a manager user account"
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"johndoe\",\n  \"password\": \"password123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "login"]
+				},
+				"description": "Login with user credentials"
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"adminuser\",\n  \"password\": \"admin123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "login"]
+				},
+				"description": "Login with admin credentials"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Profile",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"description": "JWT token from login response"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/auth/profile",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "profile"]
+				},
+				"description": "Get current user profile (requires authentication)"
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Profile",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"description": "JWT token from login response"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"John Smith\",\n  \"role\": \"Manager\",\n  \"departmentId\": 2,\n  \"collegeId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/profile",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "profile"]
+				},
+				"description": "Update current user profile (requires authentication)"
+			},
+			"response": []
+		},
+		{
+			"name": "Test Validation Errors - Registration",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"\",\n  \"username\": \"\",\n  \"password\": \"123\",\n  \"role\": \"InvalidRole\",\n  \"departmentId\": -1,\n  \"collegeId\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "register"]
+				},
+				"description": "Test validation errors with invalid input data"
+			},
+			"response": []
+		},
+		{
+			"name": "Test Duplicate Username",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"Another User\",\n  \"username\": \"johndoe\",\n  \"password\": \"password123\",\n  \"role\": \"Employee\",\n  \"departmentId\": 1,\n  \"collegeId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "register"]
+				},
+				"description": "Test duplicate username error"
+			},
+			"response": []
+		},
+		{
+			"name": "Test Invalid Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"nonexistentuser\",\n  \"password\": \"wrongpassword\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "login"]
+				},
+				"description": "Test login with invalid credentials"
+			},
+			"response": []
+		},
+		{
+			"name": "Test Profile Without Token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/auth/profile",
+					"host": ["{{base_url}}"],
+					"path": ["api", "auth", "profile"]
+				},
+				"description": "Test accessing protected endpoint without authentication token"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "test",
+			"script": {
+				"exec": [
+					"// Auto-save auth token from login responses",
+					"if (pm.response.code === 200 || pm.response.code === 201) {",
+					"    const responseJson = pm.response.json();",
+					"    if (responseJson.data && responseJson.data.token) {",
+					"        pm.environment.set('auth_token', responseJson.data.token);",
+					"        console.log('Auth token saved:', responseJson.data.token);",
+					"    }",
+					"}"
+				],
+				"type": "text/javascript"
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
