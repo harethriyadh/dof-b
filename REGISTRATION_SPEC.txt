@@ -120,5 +120,5 @@ UI Implementation Notes
 - Disable submit until all required fields are valid.
 - Send role as lowercase values (employee/manager/admin).
 - Show inline validation errors per field based on server response.
-- On success: store token for authenticated flows; navigate to post-signup route as needed.
+s- On success: store token for authenticated flows; navigate to post-signup route as needed.
 - Handle 409 specifically to prompt user to pick a different username.
