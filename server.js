@@ -5,6 +5,11 @@ const connectDB = require('./config/database');
 
 // Import routes
 const authRoutes = require('./routes/auth');
+const holidayRoutes = require('./routes/holidays');
+const leaveRequestRoutes = require('./routes/leaveRequests');
+const leaveTypeRoutes = require('./routes/leaveTypes');
+const leaveConsumptionRoutes = require('./routes/leaveConsumption');
+const notificationRoutes = require('./routes/notifications');
 
 // Initialize Express app
 const app = express();
@@ -25,6 +30,11 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/holidays', holidayRoutes);
+app.use('/api/leave-requests', leaveRequestRoutes);
+app.use('/api/leave-types', leaveTypeRoutes);
+app.use('/api/leave-consumption', leaveConsumptionRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -47,6 +57,44 @@ app.get('/', (req, res) => {
         login: 'POST /api/auth/login',
         profile: 'GET /api/auth/profile',
         updateProfile: 'PUT /api/auth/profile',
+      },
+      holidays: {
+        getAll: 'GET /api/holidays',
+        getById: 'GET /api/holidays/:id',
+        create: 'POST /api/holidays (Admin)',
+        update: 'PUT /api/holidays/:id (Admin)',
+        delete: 'DELETE /api/holidays/:id (Admin)',
+      },
+      leaveRequests: {
+        getAll: 'GET /api/leave-requests',
+        getById: 'GET /api/leave-requests/:id',
+        create: 'POST /api/leave-requests',
+        update: 'PUT /api/leave-requests/:id',
+        process: 'PATCH /api/leave-requests/:id/process (Admin/Manager)',
+        delete: 'DELETE /api/leave-requests/:id',
+      },
+      leaveTypes: {
+        getAll: 'GET /api/leave-types',
+        getById: 'GET /api/leave-types/:id',
+        create: 'POST /api/leave-types (Admin)',
+        update: 'PUT /api/leave-types/:id (Admin)',
+        delete: 'DELETE /api/leave-types/:id (Admin)',
+      },
+      leaveConsumption: {
+        getAll: 'GET /api/leave-consumption',
+        getById: 'GET /api/leave-consumption/:id',
+        create: 'POST /api/leave-consumption (Admin/Manager)',
+        update: 'PUT /api/leave-consumption/:id (Admin/Manager)',
+        delete: 'DELETE /api/leave-consumption/:id (Admin/Manager)',
+      },
+      notifications: {
+        getByUser: 'GET /api/notifications/user/:user_id',
+        getById: 'GET /api/notifications/:id',
+        create: 'POST /api/notifications (Admin/Manager)',
+        markRead: 'PATCH /api/notifications/:id/read',
+        markAllRead: 'PATCH /api/notifications/user/:user_id/read-all',
+        update: 'PUT /api/notifications/:id (Admin/Manager)',
+        delete: 'DELETE /api/notifications/:id (Admin/Manager)',
       },
       health: 'GET /health',
     },

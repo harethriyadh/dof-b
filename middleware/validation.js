@@ -25,10 +25,9 @@ const validateRegistration = [
     .withMessage('phone must be a valid phone format'),
 
   body('specialist')
-    .optional()
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage('specialist must be between 1 and 100 characters'),
+    .withMessage('specialist is required and must be between 1 and 100 characters'),
 
   body('college')
     .optional()
@@ -37,10 +36,9 @@ const validateRegistration = [
     .withMessage('college must be between 1 and 100 characters'),
 
   body('department')
-    .optional()
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage('department must be between 1 and 100 characters'),
+    .withMessage('department is required and must be between 1 and 100 characters'),
 
   body('role')
     .optional()
