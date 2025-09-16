@@ -4,7 +4,7 @@ const { generateToken } = require('../middleware/auth');
 // Register a new user
 const register = async (req, res) => {
   try {
-    const { username, password, full_name, phone, college, department, role, leave_balances } = req.body;
+    const { username, password, full_name, phone, specialist, college, department, role, leave_balances } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ username });
@@ -21,6 +21,7 @@ const register = async (req, res) => {
       password,
       full_name,
       phone,
+      specialist,
       college,
       department,
       role: (role || 'employee').toLowerCase(),
@@ -105,11 +106,19 @@ const login = async (req, res) => {
 // Get current user profile
 const getProfile = async (req, res) => {
   try {
+    const profile = {
+      name: req.user.full_name,
+      phone: req.user.phone || null,
+      specialist: req.user.specialist || null,
+      department: req.user.department || null,
+      college: req.user.college || null,
+    };
+
     res.status(200).json({
       success: true,
       message: 'Profile retrieved successfully',
       data: {
-        user: req.user,
+        profile,
       },
     });
   } catch (error) {
@@ -125,12 +134,13 @@ const getProfile = async (req, res) => {
 // Update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { full_name, phone, college, department, role, leave_balances } = req.body;
+    const { full_name, phone, specialist, college, department, role, leave_balances } = req.body;
     const userId = req.user._id;
 
     const updateData = {};
     if (typeof full_name !== 'undefined') updateData.full_name = full_name;
     if (typeof phone !== 'undefined') updateData.phone = phone;
+    if (typeof specialist !== 'undefined') updateData.specialist = specialist;
     if (typeof college !== 'undefined') updateData.college = college;
     if (typeof department !== 'undefined') updateData.department = department;
     if (typeof role !== 'undefined') updateData.role = role.toLowerCase();

@@ -389,3 +389,23 @@ The API uses MongoDB with the exact user schema you provided, including:
 - Timestamps (createdAt, updatedAt)
 - Role-based access control
 - Input validation and sanitization
+
+## Profile
+
+- Method: GET
+- URL: /api/v1/profile
+- Auth: Bearer token required
+- Response 200
+{
+  "success": true,
+  "message": "Profile retrieved successfully",
+  "data": {
+    "profile": {
+      "name": string,
+      "phone": string | null,
+      "specialist": string | null,
+      "department": string | null,
+      "college": string | null
+    }
+  }
+}

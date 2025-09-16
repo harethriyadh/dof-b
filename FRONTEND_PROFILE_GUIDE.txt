@@ -1,0 +1,62 @@
+FRONTEND PROFILE INTEGRATION GUIDE
+=================================
+
+Endpoint
+--------
+GET http://localhost:3000/api/auth/profile
+Auth: Required (Authorization: Bearer <token>)
+
+Response (200)
+--------------
+{
+  "success": true,
+  "message": "Profile retrieved successfully",
+  "data": {
+    "profile": {
+      "name": string,
+      "phone": string | null,
+      "specialist": string | null,
+      "department": string | null,
+      "college": string | null
+    }
+  }
+}
+
+Frontend Usage
+--------------
+- Ensure login flow stores JWT (localStorage key: authToken)
+- Fetch profile on app load or dashboard mount
+
+Example (fetch-based)
+---------------------
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3000/api/auth';
+
+export async function fetchProfile() {
+  const token = localStorage.getItem('authToken');
+  const res = await fetch(`${API_BASE}/profile`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.message || 'Failed to fetch profile');
+  return json.data.profile;
+}
+
+Display Fields
+--------------
+- name: show full name
+- phone: show if exists
+- specialist: show if exists
+- department: show if exists
+- college: show if exists
+
+Error Handling
+--------------
+- 401 Unauthorized: token missing/expired/invalid => redirect to /login
+- 500 Server Error: show a friendly error message
+
+Testing
+-------
+- After login, call fetchProfile() and verify all fields are shown
+- Update profile via PUT /api/auth/profile to include specialist if missing

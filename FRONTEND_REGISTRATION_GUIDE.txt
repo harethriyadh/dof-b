@@ -1,0 +1,128 @@
+FRONTEND REGISTRATION GUIDE (UI Agent)
+=====================================
+
+Endpoint
+--------
+- Method: POST
+- URL: http://localhost:3000/api/auth/register
+- Headers: Content-Type: application/json
+- Auth: Not required
+
+Request Body Schema
+-------------------
+{
+  "full_name": string (required, 2–100 chars),
+  "username": string (required, 3–30 chars, letters/numbers/underscore),
+  "password": string (required, min 6 chars),
+  "phone": string (optional, 7–20 chars, digits and + - ( ) space),
+  "specialist": string (optional, 1–100 chars),
+  "college": string (optional, 1–100 chars),
+  "department": string (optional, 1–100 chars),
+  "role": "employee" | "manager" | "admin" (optional, default "employee"),
+  "leave_balances": [                          (optional)
+    {
+      "leave_type_id": string (required if item provided),
+      "available_days": number (required if item provided, >= 0),
+      "one_time_used": boolean (optional, default false)
+    }
+  ]
+}
+
+Frontend Validation (recommend)
+-------------------------------
+- full_name: trim; length 2–100
+- username: trim; length 3–30; regex ^[a-zA-Z0-9_]+$
+- password: min length 6
+- phone: regex ^[0-9+\-()\s]{7,20}$
+- specialist: length 1–100 (if provided)
+- college: length 1–100 (if provided)
+- department: length 1–100 (if provided)
+- role: employee | manager | admin (send lowercase)
+- leave_balances: array of items with required leave_type_id and available_days
+
+Successful Response (201)
+-------------------------
+{
+  "success": true,
+  "message": "User registered successfully",
+  "data": {
+    "user": {
+      "_id": string,
+      "user_id": string,
+      "username": string,
+      "full_name": string,
+      "phone": string | undefined,
+      "specialist": string | undefined,
+      "college": string | undefined,
+      "department": string | undefined,
+      "role": "employee" | "manager" | "admin",
+      "leave_balances": [
+        { "leave_type_id": string, "available_days": number, "one_time_used": boolean, "_id": string }
+      ],
+      "createdAt": ISO string,
+      "updatedAt": ISO string,
+      "__v": number
+    },
+    "token": string (JWT, 7d)
+  }
+}
+
+Error Responses
+---------------
+- 400 Validation failed
+{
+  "success": false,
+  "message": "Validation failed",
+  "errors": [ { "field": string, "message": string } ]
+}
+- 409 Username already exists
+{ "success": false, "message": "Username already exists" }
+- 500 Registration failed
+{ "success": false, "message": "Registration failed" }
+
+Examples
+--------
+Minimal
+{
+  "full_name": "Jane Doe",
+  "username": "janedoe",
+  "password": "password123"
+}
+
+Full
+{
+  "full_name": "Jane Doe",
+  "username": "janedoe",
+  "password": "password123",
+  "phone": "+15551234567",
+  "specialist": "Computer Science",
+  "college": "Engineering College",
+  "department": "IT",
+  "role": "manager",
+  "leave_balances": [
+    { "leave_type_id": "annual", "available_days": 10, "one_time_used": false }
+  ]
+}
+
+curl
+----
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "full_name":"Jane Doe",
+    "username":"janedoe",
+    "password":"password123",
+    "phone":"+15551234567",
+    "specialist":"Computer Science",
+    "college":"Engineering College",
+    "department":"IT",
+    "role":"manager"
+  }'
+
+UI Notes
+--------
+- Disable submit until required fields valid.
+- Show inline errors per server response (map by field).
+- On success, store token (localStorage key: authToken) and user (authUser) if needed.
+- Redirect to post-signup route/dashboard.
+

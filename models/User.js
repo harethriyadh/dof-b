@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    specialist: {
+      type: String,
+      trim: true,
+    },
     department: {
       type: String,
       trim: true,

@@ -377,5 +377,25 @@ const profileResponse = await fetch('http://localhost:3000/api/auth/profile', {
 });
 ```
 
+### Test: Get Profile
+- Set method to GET
+- URL: http://localhost:3000/api/auth/profile or http://localhost:3001/api/v1/profile (depending on server)
+- Headers:
+  - Authorization: Bearer <JWT from login>
+- Expect 200 with body:
+{
+  "success": true,
+  "message": "Profile retrieved successfully",
+  "data": {
+    "profile": {
+      "name": "John Doe",
+      "phone": "+15551234567",
+      "specialist": "Computer Science",
+      "department": "IT",
+      "college": "Engineering College"
+    }
+  }
+}
+
 
 

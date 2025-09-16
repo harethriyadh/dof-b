@@ -24,6 +24,12 @@ const validateRegistration = [
     .matches(/^[0-9+\-()\s]{7,20}$/)
     .withMessage('phone must be a valid phone format'),
 
+  body('specialist')
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage('specialist must be between 1 and 100 characters'),
+
   body('college')
     .optional()
     .trim()
