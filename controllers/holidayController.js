@@ -1,4 +1,5 @@
 const OfficialHoliday = require('../models/OfficialHoliday');
+const { isHoliday, isFixedWeeklyHoliday, isOfficialHoliday } = require('../utils/holidays');
 
 // Get all holidays
 const getAllHolidays = async (req, res) => {
@@ -165,4 +166,34 @@ module.exports = {
   createHoliday,
   updateHoliday,
   deleteHoliday,
+  // New exports added below
+  checkHoliday: async (req, res) => {
+    try {
+      const { date } = req.query;
+      if (!date) {
+        return res.status(400).json({ success: false, message: 'Missing date query parameter (YYYY-MM-DD)' });
+      }
+      const parsed = new Date(date);
+      if (Number.isNaN(parsed.getTime())) {
+        return res.status(400).json({ success: false, message: 'Invalid date format. Use YYYY-MM-DD' });
+      }
+      const [fixed, official] = [isFixedWeeklyHoliday(parsed), await isOfficialHoliday(parsed)];
+      const holiday = fixed || official;
+      res.status(200).json({
+        success: true,
+        message: 'Holiday check completed',
+        data: {
+          date: parsed.toISOString(),
+          isHoliday: holiday,
+          reasons: {
+            fixedWeeklyThuFri: fixed,
+            officialRange: official,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Check holiday error:', error);
+      res.status(500).json({ success: false, message: 'Failed to check holiday' });
+    }
+  },
 };

@@ -6,12 +6,14 @@ const {
   createHoliday,
   updateHoliday,
   deleteHoliday,
+  checkHoliday,
 } = require('../controllers/holidayController');
 const { authenticateToken, authorizeRoles } = require('../middleware/auth');
 
 // Public routes
 router.get('/', getAllHolidays);
 router.get('/:id', getHolidayById);
+router.get('/check/date', checkHoliday);
 
 // Protected routes (Admin only)
 router.post('/', authenticateToken, authorizeRoles('admin'), createHoliday);

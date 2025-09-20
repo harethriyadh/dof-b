@@ -64,6 +64,7 @@ app.get('/', (req, res) => {
         create: 'POST /api/holidays (Admin)',
         update: 'PUT /api/holidays/:id (Admin)',
         delete: 'DELETE /api/holidays/:id (Admin)',
+        check: 'GET /api/holidays/check/date?date=YYYY-MM-DD',
       },
       leaveRequests: {
         getAll: 'GET /api/leave-requests',
