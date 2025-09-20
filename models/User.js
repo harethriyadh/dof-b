@@ -32,16 +32,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    specialist: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     college: {
       type: String,
       trim: true,
     },
     department: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    specialist: {
       type: String,
       required: true,
       trim: true,

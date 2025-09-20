@@ -1,0 +1,19 @@
+leave types to the AI agent in order to create them in the database:
+Sickness leave:
+    - each employee has 35 days balance to consume during the year.
+    - once the balance is consumed, the employee cannot consume any more sickness leaves.
+    - the schema most contains fields as certificating proof. 
+    - paid
+
+Day off:
+    - each employee has 2 days a month to consume, if not consumed it will be added to the next balance.
+    - paid
+    "duration_rules": [
+    {
+      "min_days": 1,
+      "max_days": 24 days a year,   // and it can be more or less depending on the employee's contract and the type of the scientific degree as employee with "Bachelor 24 days" , "Master & Doctor 15 days" and if consumed employee can not consume any more day offs.
+    }
+  ],
+
+long eduaction leave:
+    - 
