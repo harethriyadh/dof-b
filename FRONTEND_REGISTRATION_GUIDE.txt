@@ -126,3 +126,4 @@ UI Notes
 - On success, store token (localStorage key: authToken) and user (authUser) if needed.
 - Redirect to post-signup route/dashboard.
 
+
