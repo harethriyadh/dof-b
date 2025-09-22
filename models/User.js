@@ -46,6 +46,13 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    gender: {
+      type: String,
+      enum: ['male', 'female'],
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
     role: {
       type: String,
       enum: ['employee', 'manager', 'admin'],

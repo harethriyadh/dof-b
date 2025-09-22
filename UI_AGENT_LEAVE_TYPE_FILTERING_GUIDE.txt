@@ -1,0 +1,164 @@
+UI Agent Guide: Gender-Based Leave Type Filtering
+====================================================
+
+TASK: Edit the "تقديم طلب إجازة" (Submit Leave Request) card to hide specific leave types based on user gender.
+
+REQUIREMENT:
+- Hide "إجازة أمومة" (Maternity Leave) and "ولادة" (Birth Leave) if the user's gender is "male"
+- Show all leave types if the user's gender is "female"
+
+IMPLEMENTATION DETAILS:
+======================
+
+1. API ENDPOINT TO GET USER GENDER:
+   - URL: GET http://localhost:3000/api/auth/profile
+   - Headers: Authorization: Bearer <user_token>
+   - Response includes: user.gender field ("male" or "female")
+
+2. API ENDPOINT TO GET LEAVE TYPES:
+   - URL: GET http://localhost:3000/api/leave-types
+   - No authentication required
+   - Returns all available leave types
+
+3. FRONTEND LOGIC IMPLEMENTATION:
+
+   Step 1: Fetch user profile to get gender
+   ```javascript
+   // Get user gender
+   const getUserGender = async () => {
+     const response = await fetch('http://localhost:3000/api/auth/profile', {
+       headers: {
+         'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+       }
+     });
+     const data = await response.json();
+     return data.data.user.gender; // "male" or "female"
+   };
+   ```
+
+   Step 2: Fetch all leave types
+   ```javascript
+   // Get all leave types
+   const getLeaveTypes = async () => {
+     const response = await fetch('http://localhost:3000/api/leave-types');
+     const data = await response.json();
+     return data.data; // Array of leave types
+   };
+   ```
+
+   Step 3: Filter leave types based on gender
+   ```javascript
+   // Filter leave types based on gender
+   const filterLeaveTypesByGender = (leaveTypes, gender) => {
+     if (gender === 'male') {
+       return leaveTypes.filter(leaveType => 
+         leaveType.name !== 'إجازة أمومة' && 
+         leaveType.name !== 'ولادة'
+       );
+     }
+     return leaveTypes; // Show all for female
+   };
+   ```
+
+   Step 4: Complete implementation
+   ```javascript
+   // Complete implementation
+   const loadLeaveTypes = async () => {
+     try {
+       const [gender, allLeaveTypes] = await Promise.all([
+         getUserGender(),
+         getLeaveTypes()
+       ]);
+       
+       const filteredLeaveTypes = filterLeaveTypesByGender(allLeaveTypes, gender);
+       
+       // Update UI with filtered leave types
+       updateLeaveTypeDropdown(filteredLeaveTypes);
+     } catch (error) {
+       console.error('Error loading leave types:', error);
+     }
+   };
+   ```
+
+4. UI COMPONENT STRUCTURE:
+   - Find the "تقديم طلب إجازة" card component
+   - Locate the leave type selection dropdown/options
+   - Apply the filtering logic before rendering options
+
+5. SPECIFIC LEAVE TYPES TO HIDE FOR MALES:
+   - "إجازة أمومة" (Maternity Leave)
+   - "ولادة" (Birth Leave)
+
+6. API RESPONSE EXAMPLES:
+
+   User Profile Response:
+   ```json
+   {
+     "success": true,
+     "message": "Profile retrieved successfully",
+     "data": {
+       "user": {
+         "user_id": "string",
+         "username": "string",
+         "full_name": "string",
+         "gender": "male", // or "female"
+         "department": "string",
+         "specialist": "string",
+         // ... other fields
+       }
+     }
+   }
+   ```
+
+   Leave Types Response:
+   ```json
+   {
+     "success": true,
+     "message": "Leave types retrieved successfully",
+     "data": [
+       {
+         "leave_type_id": "string",
+         "name": "إجازة أمومة",
+         "description": "Maternity Leave",
+         // ... other fields
+       },
+       {
+         "leave_type_id": "string", 
+         "name": "ولادة",
+         "description": "Birth Leave",
+         // ... other fields
+       },
+       {
+         "leave_type_id": "string",
+         "name": "إجازة سنوية",
+         "description": "Annual Leave",
+         // ... other fields
+       }
+       // ... other leave types
+     ]
+   }
+   ```
+
+7. ERROR HANDLING:
+   - Handle API errors gracefully
+   - Show fallback behavior if gender cannot be determined
+   - Log errors for debugging
+
+8. TESTING SCENARIOS:
+   - Test with male user: Should hide maternity and birth leave options
+   - Test with female user: Should show all leave types
+   - Test with API errors: Should handle gracefully
+
+9. IMPLEMENTATION NOTES:
+   - This filtering should be applied when the leave request form loads
+   - Re-apply filtering if user profile is updated
+   - Consider caching the filtered results for better performance
+   - Ensure the UI updates immediately when gender-based filtering is applied
+
+10. DIRECT API URLS:
+    - User Profile: http://localhost:3000/api/auth/profile
+    - Leave Types: http://localhost:3000/api/leave-types
+    - Server Health: http://localhost:3000/health
+
+IMPLEMENTATION PRIORITY: HIGH
+This feature affects user experience and should be implemented before the leave request functionality goes live.

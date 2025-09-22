@@ -4,7 +4,7 @@ const { generateToken } = require('../middleware/auth');
 // Register a new user
 const register = async (req, res) => {
   try {
-    const { username, password, full_name, phone, specialist, college, department, role, leave_balances } = req.body;
+    const { username, password, full_name, phone, specialist, college, department, gender, role, leave_balances } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ username });
@@ -24,6 +24,7 @@ const register = async (req, res) => {
       specialist,
       college,
       department,
+      gender: gender.toLowerCase(),
       role: (role || 'employee').toLowerCase(),
       leave_balances,
     });
@@ -134,7 +135,7 @@ const getProfile = async (req, res) => {
 // Update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { full_name, phone, specialist, college, department, role, leave_balances } = req.body;
+    const { full_name, phone, specialist, college, department, gender, role, leave_balances } = req.body;
     const userId = req.user._id;
 
     const updateData = {};
@@ -143,6 +144,7 @@ const updateProfile = async (req, res) => {
     if (typeof specialist !== 'undefined') updateData.specialist = specialist;
     if (typeof college !== 'undefined') updateData.college = college;
     if (typeof department !== 'undefined') updateData.department = department;
+    if (typeof gender !== 'undefined') updateData.gender = gender.toLowerCase();
     if (typeof role !== 'undefined') updateData.role = role.toLowerCase();
     if (typeof leave_balances !== 'undefined') updateData.leave_balances = leave_balances;
 

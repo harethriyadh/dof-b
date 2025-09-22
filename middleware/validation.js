@@ -29,6 +29,10 @@ const validateRegistration = [
     .isLength({ min: 1, max: 100 })
     .withMessage('specialist is required and must be between 1 and 100 characters'),
 
+  body('gender')
+    .isIn(['male', 'female'])
+    .withMessage('gender must be either male or female'),
+
   body('college')
     .optional()
     .trim()

@@ -19,6 +19,7 @@ Request Body Schema (JSON)
   "password": string (required, min 6 chars),
   "phone": string (optional, 7–20 chars, digits and + - ( ) space),
   "specialist": string (required, 1–100 chars),
+  "gender": string (required, enum: "male" | "female"),
   "college": string (optional, 1–100 chars),
   "department": string (required, 1–100 chars),
   "role": string (optional, enum: "employee" | "manager" | "admin", default "employee"),
@@ -37,6 +38,7 @@ Validation Rules (frontend should enforce where possible)
 - password: min length 6
 - phone (optional): regex ^[0-9+\-()\s]{7,20}$
 - specialist (required): length 1–100
+  - gender (required): must be either male or female
   - college (optional): length 1–100
   - department (required): length 1–100
 - role (optional): must be one of employee, manager, admin; case-insensitive in UI, but send lowercase
