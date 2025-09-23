@@ -107,19 +107,27 @@ const login = async (req, res) => {
 // Get current user profile
 const getProfile = async (req, res) => {
   try {
-    const profile = {
-      name: req.user.full_name,
+    // Return complete user schema with all fields
+    const user = {
+      user_id: req.user.user_id,
+      username: req.user.username,
+      full_name: req.user.full_name,
       phone: req.user.phone || null,
-      specialist: req.user.specialist || null,
-      department: req.user.department || null,
       college: req.user.college || null,
+      department: req.user.department || null,
+      specialist: req.user.specialist || null,
+      gender: req.user.gender || null,
+      role: req.user.role || 'employee',
+      leave_balances: req.user.leave_balances || [],
+      createdAt: req.user.createdAt,
+      updatedAt: req.user.updatedAt,
     };
 
     res.status(200).json({
       success: true,
       message: 'Profile retrieved successfully',
       data: {
-        profile,
+        user,
       },
     });
   } catch (error) {

@@ -1,0 +1,991 @@
+[
+  {
+    "leave_type_id": "sick_001",
+    "name": "Sickness leave",
+    "description": "Medical leave for illness or injury requiring medical certificate",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 35,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 35
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "sick_002",
+    "name": "Sickness leave",
+    "description": "Medical leave for short-term illness",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 7,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 7
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "sick_003",
+    "name": "Sickness leave",
+    "description": "Medical leave for long-term illness",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 8,
+        "max_days": 35,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 35
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "sick_004",
+    "name": "Sickness leave",
+    "description": "Medical leave for emergency health issues",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 3,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 3
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "sick_005",
+    "name": "Sickness leave",
+    "description": "Medical leave for recovery period",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 35,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 35
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "sick_006",
+    "name": "Sickness leave",
+    "description": "Medical leave for chronic conditions",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 35,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 35
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "sick_007",
+    "name": "Sickness leave",
+    "description": "Medical leave for mental health issues",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 35,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 35
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "dayoff_001",
+    "name": "Day off",
+    "description": "Monthly day off leave that accumulates if not used",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 2,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "monthly",
+      "limit": 24,
+      "days_per_period": 2
+    },
+    "balance_rules": {
+      "is_accumulative": true,
+      "expires": false
+    },
+    "required_balance_id": "dayoff_balance",
+    "requires_proof": false
+  },
+  {
+    "leave_type_id": "dayoff_002",
+    "name": "Day off",
+    "description": "Day off for Bachelor degree holders (24 days/year)",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 24,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 24,
+      "days_per_period": 24
+    },
+    "balance_rules": {
+      "is_accumulative": true,
+      "expires": true
+    },
+    "required_balance_id": "dayoff_bachelor_balance",
+    "requires_proof": false
+  },
+  {
+    "leave_type_id": "dayoff_003",
+    "name": "Day off",
+    "description": "Day off for Master degree holders (15 days/year)",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 15,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 15
+    },
+    "balance_rules": {
+      "is_accumulative": true,
+      "expires": true
+    },
+    "required_balance_id": "dayoff_master_balance",
+    "requires_proof": false
+  },
+  {
+    "leave_type_id": "dayoff_004",
+    "name": "Day off",
+    "description": "Day off for Doctorate degree holders (15 days/year)",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 15,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 15
+    },
+    "balance_rules": {
+      "is_accumulative": true,
+      "expires": true
+    },
+    "required_balance_id": "dayoff_doctorate_balance",
+    "requires_proof": false
+  },
+  {
+    "leave_type_id": "dayoff_005",
+    "name": "Day off",
+    "description": "Day off based on employment contract",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 30,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 30,
+      "days_per_period": 30
+    },
+    "balance_rules": {
+      "is_accumulative": true,
+      "expires": true
+    },
+    "required_balance_id": "dayoff_contract_balance",
+    "requires_proof": false
+  },
+  {
+    "leave_type_id": "edu_001",
+    "name": "Educational leave",
+    "description": "Educational leave for short courses (1-15 days paid)",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 15,
+        "payment_status": "paid"
+      },
+      {
+        "min_days": 16,
+        "max_days": 30,
+        "payment_status": "unpaid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 30,
+      "days_per_period": 15
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "edu_002",
+    "name": "Educational leave",
+    "description": "Educational leave for conferences",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 5,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 5
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "edu_003",
+    "name": "Educational leave",
+    "description": "Educational leave for training programs",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 10,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 10
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "edu_004",
+    "name": "Educational leave",
+    "description": "Educational leave for exam preparation",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 7,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 7
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "edu_005",
+    "name": "Educational leave",
+    "description": "Educational leave for workshops",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 3,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 3
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "edu_006",
+    "name": "Educational leave",
+    "description": "Educational leave for research activities",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 15,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 15,
+      "days_per_period": 15
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "edu_007",
+    "name": "Educational leave",
+    "description": "Extended educational leave (unpaid after 15 days)",
+    "payment_status": "unpaid",
+    "duration_rules": [
+      {
+        "min_days": 16,
+        "max_days": 60,
+        "payment_status": "unpaid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 60,
+      "days_per_period": 60
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "mirage_001",
+    "name": "Mirage leave",
+    "description": "14 days leave for mirage, consumed at once",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 14,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 14
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "mirage_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "mirage_002",
+    "name": "Mirage leave",
+    "description": "Mirage leave for family matters",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 14,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 14
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "mirage_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "mirage_003",
+    "name": "Mirage leave",
+    "description": "Mirage leave for personal matters",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 14,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 14
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "mirage_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "mirage_004",
+    "name": "Mirage leave",
+    "description": "Mirage leave for religious observances",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 14,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 14
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "mirage_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "mirage_005",
+    "name": "Mirage leave",
+    "description": "Mirage leave for emergency situations",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 14,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 14
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "mirage_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "maternity_001",
+    "name": "Maternity leave",
+    "description": "51 days maternity leave, consumed at once",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 51,
+        "max_days": 51,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 51
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "maternity_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "maternity_002",
+    "name": "Maternity leave",
+    "description": "Maternity leave before birth",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 51,
+        "max_days": 51,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 51
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "maternity_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "maternity_003",
+    "name": "Maternity leave",
+    "description": "Maternity leave after birth",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 51,
+        "max_days": 51,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 51
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "maternity_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "maternity_004",
+    "name": "Maternity leave",
+    "description": "Maternity leave for pregnancy complications",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 51,
+        "max_days": 51,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 51
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "maternity_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "maternity_005",
+    "name": "Maternity leave",
+    "description": "Extended maternity leave for special circumstances",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 51,
+        "max_days": 51,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 51
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "maternity_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "birth_001",
+    "name": "Giving Birth",
+    "description": "21 days leave for giving birth, consumed at once",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 21,
+        "max_days": 21,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 21
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "birth_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "birth_002",
+    "name": "Giving Birth",
+    "description": "Leave for normal delivery",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 21,
+        "max_days": 21,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 21
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "birth_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "birth_003",
+    "name": "Giving Birth",
+    "description": "Leave for cesarean section delivery",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 21,
+        "max_days": 21,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 21
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "birth_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "birth_004",
+    "name": "Giving Birth",
+    "description": "Leave for multiple birth (twins, triplets)",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 21,
+        "max_days": 21,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 21
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "birth_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "birth_005",
+    "name": "Giving Birth",
+    "description": "Leave for premature birth",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 21,
+        "max_days": 21,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 21
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "birth_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_001",
+    "name": "Hajj & Umrah",
+    "description": "20 days leave for Hajj or Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_002",
+    "name": "Hajj & Umrah",
+    "description": "Leave for Hajj pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_003",
+    "name": "Hajj & Umrah",
+    "description": "Leave for Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_004",
+    "name": "Hajj & Umrah",
+    "description": "Leave for family Hajj or Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_005",
+    "name": "Hajj & Umrah",
+    "description": "Leave for group Hajj or Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_006",
+    "name": "Hajj & Umrah",
+    "description": "Leave for extended Hajj or Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_007",
+    "name": "Hajj & Umrah",
+    "description": "Leave for emergency Hajj or Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  }
+]

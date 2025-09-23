@@ -1,0 +1,175 @@
+[
+  {
+    "leave_type_id": "sick_001",
+    "name": "Sickness leave",
+    "description": "Medical leave for illness or injury requiring medical certificate",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 35,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 35,
+      "days_per_period": 35
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "sick_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "dayoff_001",
+    "name": "Day off",
+    "description": "Monthly day off leave that accumulates if not used",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 24,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "monthly",
+      "limit": 24,
+      "days_per_period": 2
+    },
+    "balance_rules": {
+      "is_accumulative": true,
+      "expires": false
+    },
+    "required_balance_id": "dayoff_balance",
+    "requires_proof": false
+  },
+  {
+    "leave_type_id": "edu_001",
+    "name": "Educational leave",
+    "description": "Educational leave for courses and training (1-15 days paid, 16+ unpaid)",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 1,
+        "max_days": 15,
+        "payment_status": "paid"
+      },
+      {
+        "min_days": 16,
+        "max_days": 30,
+        "payment_status": "unpaid"
+      }
+    ],
+    "frequency": {
+      "type": "limited_per_lifetime",
+      "limit": 30,
+      "days_per_period": 15
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": true
+    },
+    "required_balance_id": "edu_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "mirage_001",
+    "name": "Mirage leave",
+    "description": "14 days leave for mirage, consumed at once",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 14,
+        "max_days": 14,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 14
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "mirage_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "maternity_001",
+    "name": "Maternity leave",
+    "description": "51 days maternity leave, consumed at once",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 51,
+        "max_days": 51,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 51
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "maternity_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "birth_001",
+    "name": "Giving Birth",
+    "description": "21 days leave for giving birth, consumed at once",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 21,
+        "max_days": 21,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 21
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "birth_balance",
+    "requires_proof": true
+  },
+  {
+    "leave_type_id": "hajj_001",
+    "name": "Hajj & Umrah",
+    "description": "20 days leave for Hajj or Umrah pilgrimage",
+    "payment_status": "paid",
+    "duration_rules": [
+      {
+        "min_days": 20,
+        "max_days": 20,
+        "payment_status": "paid"
+      }
+    ],
+    "frequency": {
+      "type": "once_per_lifetime",
+      "limit": 1,
+      "days_per_period": 20
+    },
+    "balance_rules": {
+      "is_accumulative": false,
+      "expires": false
+    },
+    "required_balance_id": "hajj_balance",
+    "requires_proof": true
+  }
+]

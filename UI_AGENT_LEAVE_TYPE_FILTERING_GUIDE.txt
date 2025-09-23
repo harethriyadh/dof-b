@@ -101,10 +101,21 @@ IMPLEMENTATION DETAILS:
          "user_id": "string",
          "username": "string",
          "full_name": "string",
-         "gender": "male", // or "female"
+         "phone": "string" | null,
+         "college": "string" | null,
          "department": "string",
          "specialist": "string",
-         // ... other fields
+         "gender": "male" | "female",
+         "role": "employee" | "manager" | "admin",
+         "leave_balances": [
+           {
+             "leave_type_id": "string",
+             "available_days": "integer",
+             "one_time_used": "boolean"
+           }
+         ],
+         "createdAt": "ISO string",
+         "updatedAt": "ISO string"
        }
      }
    }

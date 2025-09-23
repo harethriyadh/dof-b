@@ -28,7 +28,7 @@ Mirage leave:
     - ( Fridays & Thursdays ) are not counted
     - 
 
-Matherhood leave:
+Motherhood leave:
     - Paid
     - 51 days, will be consumed at once,once  approved.
     - ( Fridays & Thursdays ) are not counted
@@ -43,4 +43,19 @@ Giving Birth:
 Hajj & Umrah:
     - paid
     - 20 days, will be consumed at once,once  approved.
+
+
+
+
+
+
+In this file -> leave types.txt
+Sickness leave:
+Day off:
+Eduactional leave:
+Mirage leave:
+Matherhood leave:
+Giving Birth:
+Hajj & Umrah:
+
 

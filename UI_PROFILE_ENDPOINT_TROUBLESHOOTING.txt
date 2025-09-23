@@ -1,0 +1,205 @@
+UI Profile Endpoint Troubleshooting Guide
+==========================================
+
+ISSUE: "حدث خطأ: Invalid profile response - الرجاء المحاولة مرة أخرى."
+
+SOLUTION: The profile endpoint requires proper authentication. Here's how to fix it:
+
+1. AUTHENTICATION REQUIREMENT:
+   - URL: http://localhost:3000/api/auth/profile
+   - Method: GET
+   - Headers Required: Authorization: Bearer <token>
+
+2. CORRECT IMPLEMENTATION:
+
+   Step 1: Get the token from login response
+   ```javascript
+   // After successful login, store the token
+   const loginResponse = await fetch('http://localhost:3000/api/auth/login', {
+     method: 'POST',
+     headers: { 'Content-Type': 'application/json' },
+     body: JSON.stringify({
+       username: 'username',
+       password: 'password'
+     })
+   });
+   
+   const loginData = await loginResponse.json();
+   if (loginData.success) {
+     localStorage.setItem('auth_token', loginData.data.token);
+   }
+   ```
+
+   Step 2: Use the token for profile requests
+   ```javascript
+   // Get user profile with authentication
+   const getProfile = async () => {
+     try {
+       const token = localStorage.getItem('auth_token');
+       if (!token) {
+         throw new Error('No authentication token found');
+       }
+       
+       const response = await fetch('http://localhost:3000/api/auth/profile', {
+         method: 'GET',
+         headers: {
+           'Authorization': `Bearer ${token}`,
+           'Content-Type': 'application/json'
+         }
+       });
+       
+       const data = await response.json();
+       
+       if (!data.success) {
+         throw new Error(data.message || 'Profile request failed');
+       }
+       
+       return data.data.user;
+     } catch (error) {
+       console.error('Profile error:', error);
+       throw error;
+     }
+   };
+   ```
+
+3. ERROR HANDLING:
+
+   ```javascript
+   // Complete error handling implementation
+   const loadUserProfile = async () => {
+     try {
+       const user = await getProfile();
+       
+       // Use user data
+       console.log('User gender:', user.gender);
+       console.log('User role:', user.role);
+       // ... other user fields
+       
+     } catch (error) {
+       if (error.message.includes('Access token required')) {
+         // Redirect to login
+         window.location.href = '/login';
+       } else if (error.message.includes('Invalid token')) {
+         // Clear token and redirect to login
+         localStorage.removeItem('auth_token');
+         window.location.href = '/login';
+       } else {
+         // Show error message
+         alert('حدث خطأ: ' + error.message);
+       }
+     }
+   };
+   ```
+
+4. COMMON ISSUES AND SOLUTIONS:
+
+   Issue 1: "Access token required"
+   - Solution: Make sure to include Authorization header
+   - Check: localStorage.getItem('auth_token') returns a valid token
+
+   Issue 2: "Invalid token"
+   - Solution: Token expired or invalid, redirect to login
+   - Check: Token format should be "Bearer <actual_token>"
+
+   Issue 3: "Token expired"
+   - Solution: Refresh token or redirect to login
+   - Check: Token expiration time
+
+   Issue 4: CORS errors
+   - Solution: Make sure server allows your domain
+   - Check: Server CORS configuration
+
+5. TESTING THE ENDPOINT:
+
+   Test 1: Without token (should fail)
+   ```bash
+   curl http://localhost:3000/api/auth/profile
+   # Expected: {"success":false,"message":"Access token required"}
+   ```
+
+   Test 2: With valid token (should succeed)
+   ```bash
+   curl -H "Authorization: Bearer YOUR_TOKEN_HERE" http://localhost:3000/api/auth/profile
+   # Expected: Complete user profile data
+   ```
+
+6. EXPECTED SUCCESSFUL RESPONSE:
+
+   ```json
+   {
+     "success": true,
+     "message": "Profile retrieved successfully",
+     "data": {
+       "user": {
+         "user_id": "string",
+         "username": "string",
+         "full_name": "string",
+         "phone": "string" | null,
+         "college": "string" | null,
+         "department": "string",
+         "specialist": "string",
+         "gender": "male" | "female",
+         "role": "employee" | "manager" | "admin",
+         "leave_balances": [],
+         "createdAt": "ISO string",
+         "updatedAt": "ISO string"
+       }
+     }
+   }
+   ```
+
+7. DEBUGGING STEPS:
+
+   Step 1: Check if token exists
+   ```javascript
+   console.log('Token:', localStorage.getItem('auth_token'));
+   ```
+
+   Step 2: Check request headers
+   ```javascript
+   console.log('Headers:', {
+     'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+     'Content-Type': 'application/json'
+   });
+   ```
+
+   Step 3: Check response status
+   ```javascript
+   console.log('Response status:', response.status);
+   console.log('Response data:', await response.json());
+   ```
+
+8. QUICK FIX TEMPLATE:
+
+   ```javascript
+   // Replace your current profile request with this:
+   const token = localStorage.getItem('auth_token');
+   const response = await fetch('http://localhost:3000/api/auth/profile', {
+     headers: {
+       'Authorization': `Bearer ${token}`,
+       'Content-Type': 'application/json'
+     }
+   });
+   
+   const data = await response.json();
+   if (data.success) {
+     // Use data.data.user
+     console.log('Profile loaded:', data.data.user);
+   } else {
+     console.error('Profile error:', data.message);
+   }
+   ```
+
+9. SERVER STATUS CHECK:
+   - Health check: http://localhost:3000/health
+   - Should return: {"success":true,"message":"Server is running"}
+
+10. AUTHENTICATION FLOW:
+    1. User logs in → Get token from response
+    2. Store token in localStorage
+    3. Use token in Authorization header for profile requests
+    4. Handle token expiration/errors gracefully
+
+IMPLEMENTATION PRIORITY: HIGH
+This fixes the immediate "Invalid profile response" error.
+
