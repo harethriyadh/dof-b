@@ -44,7 +44,7 @@ const leaveRequestSchema = new mongoose.Schema(
     },
     reason: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     status: {

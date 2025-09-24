@@ -6,24 +6,97 @@ const getAllLeaveRequests = async (req, res) => {
     const { status, user_id, department } = req.query;
     let filter = {};
     
-    if (status) filter.status = status;
-    if (user_id) filter.user_id = user_id;
-    if (department) filter.department = department;
+    // Log the incoming request for debugging
+    console.log('GET /api/leave-requests - Query params:', req.query);
+    console.log('GET /api/leave-requests - User:', req.user ? req.user.user_id : 'No user');
     
+    // Build filter object
+    if (status) {
+      // Validate status value
+      if (!['pending', 'approved', 'rejected'].includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid status value',
+          error: 'Status must be one of: pending, approved, rejected',
+          received: status,
+          validValues: ['pending', 'approved', 'rejected']
+        });
+      }
+      filter.status = status;
+    }
+    
+    if (user_id) {
+      filter.user_id = user_id;
+    }
+    
+    if (department) {
+      filter.department = department;
+    }
+    
+    console.log('GET /api/leave-requests - Filter:', filter);
+    
+    // Execute query with error handling
     const leaveRequests = await LeaveRequest.find(filter).sort({ request_date: -1 });
+    
+    console.log(`GET /api/leave-requests - Found ${leaveRequests.length} requests`);
     
     res.status(200).json({
       success: true,
       message: 'Leave requests retrieved successfully',
       data: leaveRequests,
+      meta: {
+        count: leaveRequests.length,
+        filter: filter,
+        query: req.query
+      }
     });
   } catch (error) {
     console.error('Get leave requests error:', error);
-    res.status(500).json({
+    
+    // Detailed error information
+    const errorDetails = {
       success: false,
       message: 'Failed to retrieve leave requests',
-      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
-    });
+      error: error.message,
+      timestamp: new Date().toISOString(),
+      query: req.query,
+      user: req.user ? req.user.user_id : 'No user',
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    };
+    
+    // Handle specific error types
+    if (error.name === 'CastError') {
+      errorDetails.message = 'Invalid query parameter format';
+      errorDetails.details = {
+        field: error.path,
+        value: error.value,
+        expectedType: error.kind
+      };
+      return res.status(400).json(errorDetails);
+    }
+    
+    if (error.name === 'ValidationError') {
+      errorDetails.message = 'Query validation failed';
+      errorDetails.details = Object.values(error.errors).map(err => ({
+        field: err.path,
+        message: err.message,
+        value: err.value
+      }));
+      return res.status(400).json(errorDetails);
+    }
+    
+    // Database connection errors
+    if (error.name === 'MongoNetworkError' || error.name === 'MongoTimeoutError') {
+      errorDetails.message = 'Database connection error';
+      errorDetails.details = {
+        type: error.name,
+        message: 'Unable to connect to database'
+      };
+      return res.status(503).json(errorDetails);
+    }
+    
+    // Default error response
+    res.status(500).json(errorDetails);
   }
 };
 
@@ -64,17 +137,40 @@ const createLeaveRequest = async (req, res) => {
       leave_type,
       start_date,
       end_date,
-      reason,
-      user_id
+      reason
     } = req.body;
+    
+    // Get user_id from authenticated user's JWT token
+    const user_id = req.user.user_id;
+    
+    // Validate required fields
+    if (!employee_name || !department || !leave_type || !start_date || !end_date) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields',
+        required: ['employee_name', 'department', 'leave_type', 'start_date', 'end_date']
+      });
+    }
+    
+    // Validate date format
+    const startDate = new Date(start_date);
+    const endDate = new Date(end_date);
+    
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid date format. Use ISO format (YYYY-MM-DD)',
+        example: '2025-01-23'
+      });
+    }
     
     const leaveRequest = new LeaveRequest({
       employee_name,
       department,
       leave_type,
-      start_date: new Date(start_date),
-      end_date: new Date(end_date),
-      reason,
+      start_date: startDate,
+      end_date: endDate,
+      reason: reason || '', // Make reason optional, default to empty string
       user_id,
     });
     
@@ -112,6 +208,11 @@ const updateLeaveRequest = async (req, res) => {
     // Convert date strings to Date objects if provided
     if (updateData.start_date) updateData.start_date = new Date(updateData.start_date);
     if (updateData.end_date) updateData.end_date = new Date(updateData.end_date);
+    
+    // Handle optional reason field
+    if (updateData.reason !== undefined) {
+      updateData.reason = updateData.reason || '';
+    }
     
     const leaveRequest = await LeaveRequest.findOneAndUpdate(
       { request_no: id },
