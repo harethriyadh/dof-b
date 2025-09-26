@@ -47,6 +47,13 @@ const leaveRequestSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+    spare_employee_id: {
+      type: String,
+      required: false,
+      trim: true,
+      default: null,
+      index: true,
+    },
     status: {
       type: String,
       enum: ['approved', 'rejected', 'pending'],

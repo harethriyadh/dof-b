@@ -3,7 +3,7 @@ const LeaveRequest = require('../models/LeaveRequest');
 // Get all leave requests
 const getAllLeaveRequests = async (req, res) => {
   try {
-    const { status, user_id, department } = req.query;
+    const { status, user_id, department, spare_employee_id } = req.query;
     let filter = {};
     
     // Log the incoming request for debugging
@@ -31,6 +31,10 @@ const getAllLeaveRequests = async (req, res) => {
     
     if (department) {
       filter.department = department;
+    }
+    
+    if (spare_employee_id) {
+      filter.spare_employee_id = spare_employee_id;
     }
     
     console.log('GET /api/leave-requests - Filter:', filter);
@@ -137,7 +141,8 @@ const createLeaveRequest = async (req, res) => {
       leave_type,
       start_date,
       end_date,
-      reason
+      reason,
+      spare_employee_id
     } = req.body;
     
     // Get user_id from authenticated user's JWT token
@@ -171,6 +176,7 @@ const createLeaveRequest = async (req, res) => {
       start_date: startDate,
       end_date: endDate,
       reason: reason || '', // Make reason optional, default to empty string
+      spare_employee_id: spare_employee_id ?? null,
       user_id,
     });
     
@@ -212,6 +218,11 @@ const updateLeaveRequest = async (req, res) => {
     // Handle optional reason field
     if (updateData.reason !== undefined) {
       updateData.reason = updateData.reason || '';
+    }
+
+    // Normalize optional spare_employee_id to allow null clearing
+    if (Object.prototype.hasOwnProperty.call(updateData, 'spare_employee_id')) {
+      updateData.spare_employee_id = updateData.spare_employee_id ?? null;
     }
     
     const leaveRequest = await LeaveRequest.findOneAndUpdate(
