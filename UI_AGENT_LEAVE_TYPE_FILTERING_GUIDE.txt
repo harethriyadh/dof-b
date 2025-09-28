@@ -105,6 +105,7 @@ IMPLEMENTATION DETAILS:
          "college": "string" | null,
          "department": "string",
          "specialist": "string",
+         "administrative_position": "string" | null,
          "gender": "male" | "female",
          "role": "employee" | "manager" | "admin",
          "leave_balances": [

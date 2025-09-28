@@ -19,6 +19,7 @@ Request Body Schema (JSON)
   "password": string (required, min 6 chars),
   "phone": string (optional, 7–20 chars, digits and + - ( ) space),
   "specialist": string (required, 1–100 chars),
+  "administrative_position": string (optional, 1–100 chars),
   "gender": string (required, enum: "male" | "female"),
   "college": string (optional, 1–100 chars),
   "department": string (required, 1–100 chars),
@@ -38,9 +39,10 @@ Validation Rules (frontend should enforce where possible)
 - password: min length 6
 - phone (optional): regex ^[0-9+\-()\s]{7,20}$
 - specialist (required): length 1–100
-  - gender (required): must be either male or female
-  - college (optional): length 1–100
-  - department (required): length 1–100
+- administrative_position (optional): length 1–100
+- gender (required): must be either male or female
+- college (optional): length 1–100
+- department (required): length 1–100
 - role (optional): must be one of employee, manager, admin; case-insensitive in UI, but send lowercase
 - leave_balances (optional): array; each item must include leave_type_id (string) and available_days (int >= 0); one_time_used defaults to false
 
@@ -64,6 +66,7 @@ Successful Response (201)
       "phone": string | undefined,
       "college": string | undefined,
       "department": string | undefined,
+      "administrative_position": string | undefined,
       "role": "employee" | "manager" | "admin",
       "leave_balances": [
         { "leave_type_id": string, "available_days": number, "one_time_used": boolean, "_id": string }
@@ -112,6 +115,7 @@ Example Request — Full
   "phone": "+15551234567",
   "college": "Engineering College",
   "department": "IT",
+  "administrative_position": "Senior Developer",
   "role": "manager",
   "leave_balances": [
     { "leave_type_id": "annual", "available_days": 10, "one_time_used": false }

@@ -46,6 +46,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    administrative_position: {
+      type: String,
+      required: false, // Optional field
+      trim: true,
+    },
     gender: {
       type: String,
       enum: ['male', 'female'],

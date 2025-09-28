@@ -34,6 +34,7 @@ Content-Type: application/json
       "college": "Engineering College",
       "department": "Computer Science",
       "specialist": "Software Development",
+      "administrative_position": "Senior Developer",
       "gender": "male",
       "role": "employee",
       "leave_balances": [
@@ -77,6 +78,7 @@ Content-Type: application/json
   "specialist": "Data Science",
   "college": "Business College",
   "department": "Information Technology",
+  "administrative_position": "Team Lead",
   "gender": "male",
   "role": "manager",
   "leave_balances": [
@@ -100,6 +102,7 @@ Content-Type: application/json
 - `specialist`: String (1-100 characters) - Specialization field
 - `college`: String (1-100 characters) - College name
 - `department`: String (1-100 characters) - Department name
+- `administrative_position`: String (1-100 characters) - Administrative position (optional)
 - `gender`: String (enum: "male", "female") - Gender
 - `role`: String (enum: "employee", "manager", "admin") - User role
 - `leave_balances`: Array - Leave balance information
@@ -118,6 +121,7 @@ Content-Type: application/json
       "college": "Business College",
       "department": "Information Technology",
       "specialist": "Data Science",
+      "administrative_position": "Team Lead",
       "gender": "male",
       "role": "manager",
       "leave_balances": [
@@ -269,6 +273,7 @@ interface User {
   college: string | null;
   department: string | null;
   specialist: string | null;
+  administrative_position: string | null;
   gender: "male" | "female" | null;
   role: "employee" | "manager" | "admin";
   leave_balances: LeaveBalance[];
