@@ -30,10 +30,12 @@ const userSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
+      required: true,
       trim: true,
     },
     college: {
       type: String,
+      required: true,
       trim: true,
     },
     department: {
@@ -41,14 +43,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    specialist: {
+    administrative_position: {
       type: String,
       required: true,
       trim: true,
     },
-    administrative_position: {
+    degree: {
       type: String,
-      required: false, // Optional field
+      required: true,
       trim: true,
     },
     gender: {

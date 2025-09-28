@@ -4,7 +4,7 @@ const { generateToken } = require('../middleware/auth');
 // Register a new user
 const register = async (req, res) => {
   try {
-    const { username, password, full_name, phone, specialist, college, department, administrative_position, gender, role, leave_balances } = req.body;
+    const { username, password, full_name, phone, college, department, administrative_position, degree, gender, role, leave_balances } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ username });
@@ -21,10 +21,10 @@ const register = async (req, res) => {
       password,
       full_name,
       phone,
-      specialist,
       college,
       department,
       administrative_position,
+      degree,
       gender: gender.toLowerCase(),
       role: (role || 'employee').toLowerCase(),
       leave_balances,
@@ -113,13 +113,13 @@ const getProfile = async (req, res) => {
       user_id: req.user.user_id,
       username: req.user.username,
       full_name: req.user.full_name,
-      phone: req.user.phone || null,
-      college: req.user.college || null,
-      department: req.user.department || null,
-      specialist: req.user.specialist || null,
-      administrative_position: req.user.administrative_position || null,
-      gender: req.user.gender || null,
-      role: req.user.role || 'employee',
+      phone: req.user.phone,
+      college: req.user.college,
+      department: req.user.department,
+      administrative_position: req.user.administrative_position,
+      degree: req.user.degree,
+      gender: req.user.gender,
+      role: req.user.role,
       leave_balances: req.user.leave_balances || [],
       createdAt: req.user.createdAt,
       updatedAt: req.user.updatedAt,
@@ -145,16 +145,16 @@ const getProfile = async (req, res) => {
 // Update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { full_name, phone, specialist, college, department, administrative_position, gender, role, leave_balances } = req.body;
+    const { full_name, phone, college, department, administrative_position, degree, gender, role, leave_balances } = req.body;
     const userId = req.user._id;
 
     const updateData = {};
     if (typeof full_name !== 'undefined') updateData.full_name = full_name;
     if (typeof phone !== 'undefined') updateData.phone = phone;
-    if (typeof specialist !== 'undefined') updateData.specialist = specialist;
     if (typeof college !== 'undefined') updateData.college = college;
     if (typeof department !== 'undefined') updateData.department = department;
     if (typeof administrative_position !== 'undefined') updateData.administrative_position = administrative_position;
+    if (typeof degree !== 'undefined') updateData.degree = degree;
     if (typeof gender !== 'undefined') updateData.gender = gender.toLowerCase();
     if (typeof role !== 'undefined') updateData.role = role.toLowerCase();
     if (typeof leave_balances !== 'undefined') updateData.leave_balances = leave_balances;

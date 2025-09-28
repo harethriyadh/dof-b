@@ -19,31 +19,28 @@ const validateRegistration = [
     .withMessage('password must be at least 6 characters long'),
 
   body('phone')
-    .optional()
     .trim()
-    .matches(/^[0-9+\-()\s]{7,20}$/)
-    .withMessage('phone must be a valid phone format'),
+    .isLength({ min: 1, max: 20 })
+    .withMessage('phone is required and must be between 1 and 20 characters'),
 
-  body('specialist')
+  body('college')
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage('specialist is required and must be between 1 and 100 characters'),
+    .withMessage('college is required and must be between 1 and 100 characters'),
 
   body('administrative_position')
-    .optional()
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage('administrative_position must be between 1 and 100 characters'),
+    .withMessage('administrative_position is required and must be between 1 and 100 characters'),
+
+  body('degree')
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage('degree is required and must be between 1 and 100 characters'),
 
   body('gender')
     .isIn(['male', 'female'])
     .withMessage('gender must be either male or female'),
-
-  body('college')
-    .optional()
-    .trim()
-    .isLength({ min: 1, max: 100 })
-    .withMessage('college must be between 1 and 100 characters'),
 
   body('department')
     .trim()
@@ -51,7 +48,6 @@ const validateRegistration = [
     .withMessage('department is required and must be between 1 and 100 characters'),
 
   body('role')
-    .optional()
     .isIn(['employee', 'manager', 'admin'])
     .withMessage('role must be one of: employee, manager, admin'),
 
