@@ -189,9 +189,136 @@ const updateProfile = async (req, res) => {
   }
 };
 
+// Get users by department
+const getUsersByDepartment = async (req, res) => {
+  try {
+    const { department } = req.params;
+    
+    if (!department) {
+      return res.status(400).json({
+        success: false,
+        message: 'Department parameter is required',
+      });
+    }
+
+    // Find users by department (case-insensitive)
+    const users = await User.find({ 
+      department: { $regex: new RegExp(`^${department}$`, 'i') }
+    }).select('-password'); // Exclude password field
+
+    res.status(200).json({
+      success: true,
+      message: `Users from ${department} department retrieved successfully`,
+      data: {
+        department: department,
+        count: users.length,
+        users: users,
+      },
+    });
+  } catch (error) {
+    console.error('Get users by department error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve users by department',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+    });
+  }
+};
+
+// Get all departments
+const getAllDepartments = async (req, res) => {
+  try {
+    // Get unique departments from all users
+    const departments = await User.distinct('department');
+    
+    // Get count of users per department
+    const departmentCounts = await Promise.all(
+      departments.map(async (dept) => {
+        const count = await User.countDocuments({ department: dept });
+        return {
+          department: dept,
+          user_count: count
+        };
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'All departments retrieved successfully',
+      data: {
+        total_departments: departments.length,
+        departments: departmentCounts,
+      },
+    });
+  } catch (error) {
+    console.error('Get all departments error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve departments',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+    });
+  }
+};
+
+// Get users with filters (department, role, college, etc.)
+const getUsersWithFilters = async (req, res) => {
+  try {
+    const { department, role, college, gender, page = 1, limit = 10 } = req.query;
+    
+    // Build filter object
+    const filters = {};
+    if (department) filters.department = { $regex: new RegExp(`^${department}$`, 'i') };
+    if (role) filters.role = role.toLowerCase();
+    if (college) filters.college = { $regex: new RegExp(`^${college}$`, 'i') };
+    if (gender) filters.gender = gender.toLowerCase();
+
+    // Calculate pagination
+    const skip = (page - 1) * limit;
+    const limitNum = parseInt(limit);
+
+    // Get users with filters and pagination
+    const users = await User.find(filters)
+      .select('-password')
+      .skip(skip)
+      .limit(limitNum)
+      .sort({ createdAt: -1 });
+
+    // Get total count for pagination
+    const totalUsers = await User.countDocuments(filters);
+    const totalPages = Math.ceil(totalUsers / limitNum);
+
+    res.status(200).json({
+      success: true,
+      message: 'Users retrieved successfully',
+      data: {
+        users: users,
+        pagination: {
+          current_page: parseInt(page),
+          total_pages: totalPages,
+          total_users: totalUsers,
+          users_per_page: limitNum,
+          has_next_page: page < totalPages,
+          has_prev_page: page > 1,
+        },
+        filters_applied: filters,
+      },
+    });
+  } catch (error) {
+    console.error('Get users with filters error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve users',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
   updateProfile,
+  getUsersByDepartment,
+  getAllDepartments,
+  getUsersWithFilters,
 };

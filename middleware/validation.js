@@ -29,9 +29,10 @@ const validateRegistration = [
     .withMessage('college is required and must be between 1 and 100 characters'),
 
   body('administrative_position')
+    .optional()
     .trim()
     .isLength({ min: 1, max: 100 })
-    .withMessage('administrative_position is required and must be between 1 and 100 characters'),
+    .withMessage('administrative_position must be between 1 and 100 characters'),
 
   body('degree')
     .trim()

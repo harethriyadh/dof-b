@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema(
     },
     administrative_position: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     degree: {
