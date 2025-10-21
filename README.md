@@ -145,5 +145,3 @@ All success responses follow this format:
 - JWT secret should be changed in production
 - All passwords are automatically hashed before saving to the database
 
-
-
