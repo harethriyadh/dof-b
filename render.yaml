@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: dof-auth-api
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Add your MongoDB connection string and other environment variables in Render dashboard
+      # - key: MONGODB_URI
+      #   value: your-mongodb-connection-string
+      # - key: JWT_SECRET
+      #   value: your-jwt-secret
+
