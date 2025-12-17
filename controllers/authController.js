@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const { generateToken } = require('../middleware/auth');
+const bcrypt = require('bcryptjs');
 
 // Register a new user
 const register = async (req, res) => {
@@ -313,11 +314,93 @@ const getUsersWithFilters = async (req, res) => {
   }
 };
 
+// Change password (protected)
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const { current_password, new_password, confirm_password } = req.body;
+
+    if (!current_password || !new_password || !confirm_password) {
+      return res.status(400).json({ success: false, message: 'All fields are required' });
+    }
+
+    if (new_password !== confirm_password) {
+      return res.status(400).json({ success: false, message: 'Password confirmation does not match' });
+    }
+
+    if (new_password.length < 8) {
+      return res.status(400).json({ success: false, message: 'Password must be at least 8 characters' });
+    }
+
+    // Load user including password and password_history
+    const user = await User.findById(userId).select('+password password_history tokenVersion');
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+
+    // Verify current password
+    const matches = await user.comparePassword(current_password);
+    if (!matches) {
+      return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+    }
+
+    // New password must differ from old
+    const newEqualsOld = await user.comparePassword(new_password);
+    if (newEqualsOld) {
+      return res.status(400).json({ success: false, message: 'New password must be different from current password' });
+    }
+
+    // Check password history (if present)
+    if (user.password_history && user.password_history.length) {
+      for (const ph of user.password_history) {
+        if (ph && ph.hash) {
+          const reused = await bcrypt.compare(new_password, ph.hash);
+          if (reused) {
+            return res.status(400).json({ success: false, message: 'New password was used recently. Choose a different password.' });
+          }
+        }
+      }
+    }
+
+    // Hash new password
+    const newHash = await bcrypt.hash(new_password, 12);
+
+    // Update user with new hash, password_changed_at, increment tokenVersion and add to history
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          password: newHash,
+          password_changed_at: new Date(),
+        },
+        $inc: { tokenVersion: 1 },
+        $push: { password_history: { $each: [{ hash: newHash, changedAt: new Date() }], $position: 0 } },
+      },
+      { new: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(500).json({ success: false, message: 'Failed to update password' });
+    }
+
+    // Optionally generate and return a new token
+    const token = generateToken(updatedUser._id);
+
+    // TODO: send security email notification (outside scope here)
+
+    res.status(200).json({ success: true, message: 'Password changed successfully', data: { token, user: updatedUser } });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ success: false, message: 'Failed to change password', error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error' });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
   updateProfile,
+  changePassword,
   getUsersByDepartment,
   getAllDepartments,
   getUsersWithFilters,

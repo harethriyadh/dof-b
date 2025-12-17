@@ -22,16 +22,29 @@ const authenticateToken = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret_key');
-    const user = await User.findById(decoded.userId).select('-password');
+      // Fetch user (exclude password by default) but include password_changed_at if present
+      const user = await User.findById(decoded.userId).select('-password');
 
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid token - user not found',
-      });
-    }
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: 'Invalid token - user not found',
+        });
+      }
 
-    req.user = user;
+      // Invalidate tokens issued before the last password change
+      if (user.password_changed_at) {
+        const pwdChangedAtSec = Math.floor(new Date(user.password_changed_at).getTime() / 1000);
+        // decoded.iat is in seconds
+        if (decoded.iat && decoded.iat < pwdChangedAtSec) {
+          return res.status(401).json({
+            success: false,
+            message: 'Token invalid due to password change. Please log in again.',
+          });
+        }
+      }
+
+      req.user = user;
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {

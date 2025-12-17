@@ -1,0 +1,140 @@
+Purpose: Instructions for an AI agent to update the Profile UI section shown below.
+
+Target UI snippet (exact text to display):
+
+"الملف الشخصي
+معلومات المستخدم والتفاصيل الشخصية
+
+إلغاء التعديل
+الاسم الكامل *
+2b743wwb64uwb346u
+رقم الهاتف *
+5647564756476475
+كلمة المرور الجديدة (اختياري)
+اتركها فارغة إذا كنت لا تريد تغيير كلمة المرور
+
+حفظ التغييرات"
+
+---
+
+1) Purpose / Goal for the AI agent
+- Update or implement the Profile edit UI so it displays the above Arabic copy.
+- Support reading the current profile from the API and sending updates to the server.
+- Respect required/optional field semantics shown in the UI copy.
+- Provide clear validation and UX for the optional password field.
+
+2) Exact UI strings (split for easier insertion)
+- Page heading: "الملف الشخصي"
+- Subtitle / description: "معلومات المستخدم والتفاصيل الشخصية"
+- Edit toggle / cancel button: "إلغاء التعديل"
+- Full name label (required): "الاسم الكامل *"
+- Full name example / placeholder: use user's current full name (example in UI: "2b743wwb64uwb346u")
+- Phone label (required): "رقم الهاتف *"
+- Phone example / placeholder: user's phone (example in UI: "5647564756476475")
+- New password label (optional): "كلمة المرور الجديدة (اختياري)"
+- New password helper text: "اتركها فارغة إذا كنت لا تريد تغيير كلمة المرور"
+- Save button: "حفظ التغييرات"
+
+3) API endpoints (backend repository confirmation)
+- GET current profile: GET /api/auth/profile (protected; Authorization: Bearer <token>)
+  - Response: { success: true, message, data: { user: { ... } } }
+  - Example returned user fields used by the UI: full_name, phone, username
+
+- Update profile: PUT /api/auth/profile (protected; Authorization: Bearer <token>)
+  - Request body: JSON with any of the updatable fields.
+  - Confirmed updatable fields in backend: full_name, phone, college, department, administrative_position, degree, gender, role, leave_balances
+  - NOTE: The current backend implementation (controllers/authController.updateProfile) does NOT accept or handle a password change field. If the UI includes "كلمة المرور الجديدة" and should change the password, implement one of the following:
+    1) Add password handling server-side in updateProfile: accept `password` (or `new_password`) in request body, bcrypt-hash it and save (ensure strong validation and require current password or confirm flow), OR
+    2) Create a separate endpoint `PUT /api/auth/password` or `POST /api/auth/change-password` that requires the current password + new password and securely updates it.
+
+4) Request/Response examples
+- Fetch profile (GET):
+  Request headers:
+    Authorization: Bearer <token>
+
+  Sample response:
+  {
+    "success": true,
+    "message": "Profile retrieved successfully",
+    "data": {
+      "user": {
+        "user_id": "...",
+        "username": "jdoe",
+        "full_name": "John Doe",
+        "phone": "+966512345678",
+        "college": "...",
+        "department": "...",
+        "gender": "male",
+        "role": "employee",
+        "createdAt": "...",
+        "updatedAt": "..."
+      }
+    }
+  }
+
+- Update profile (PUT /api/auth/profile):
+  Request body (JSON) example to update name and phone:
+  {
+    "full_name": "أحمد محمد",
+    "phone": "+966512345678"
+  }
+
+  Successful response:
+  {
+    "success": true,
+    "message": "Profile updated successfully",
+    "data": { "user": { /* updated user object (password excluded) */ } }
+  }
+
+5) Field mapping (frontend -> backend)
+- UI field "الاسم الكامل" -> request field `full_name` (string) [required in UI]
+- UI field "رقم الهاتف" -> request field `phone` (string) [required in UI]
+- UI field "كلمة المرور الجديدة" -> NOT currently supported by PUT /api/auth/profile. See note above.
+
+6) Validation rules (recommended for UI side)
+- full_name: non-empty, max length 128 characters. Show inline error: "الاسم الكامل مطلوب" when empty.
+- phone: non-empty, allow digits, +, spaces; prefer E.164 format. Minimum 7 digits. Inline error: "الرجاء إدخال رقم هاتف صالح" when invalid.
+- new_password (optional if implemented): if provided, min length 8, recommend mix of letters and numbers. Inline helper text is already "اتركها فارغة إذا كنت لا تريد تغيير كلمة المرور". If password update is implemented server-side, require entering current password or a confirmation field (for security).
+
+7) UX behavior notes
+- The form should initially be in read-only mode showing values from GET /api/auth/profile. When user clicks an "Edit" control, switch to editable inputs and show "إلغاء التعديل" which reverts unsaved changes.
+- The Save button should be disabled until there are changes and all required validations pass.
+- Show success toast or inline message after successful update: e.g. "تم حفظ التغييرات".
+- On 401 from the API, clear local auth token and redirect to login.
+
+8) Accessibility
+- Ensure labels are linked to inputs with `for` / `id` attributes.
+- Buttons should be reachable by keyboard; use appropriate ARIA attributes for error messages.
+
+9) Frontend file recommendations (where to change/inspect)
+- Search for the Profile component that fetches `/api/auth/profile` (the repository includes `UI_PROFILE_CODE_FIX.txt` which contains a React component example). Implement changes in the real Profile component(s) in the frontend codebase (if separate).
+
+10) Test cases (basic)
+- Happy path: user edits full name and phone, presses save -> server returns 200 -> UI shows success and updated fields.
+- Optional password empty: user leaves new password blank -> server not sent any password field -> server updates other fields and password remains unchanged.
+- Invalid phone: show client-side validation error and prevent submit.
+- Unauthorized: missing or invalid token -> API returns 401, client logs out and redirects to login.
+- Server error: API returns 500 -> show generic error message: "حدث خطأ، حاول مرة أخرى لاحقًا".
+
+11) Required changes server-side (if you want password change from this UI)
+- Implement secure password update flow (prefer separate endpoint requiring current password or an email verification flow).
+
+12) Implementation checklist for the AI agent
+- [ ] Add Arabic strings exactly as above in UI.
+- [ ] Make Profile page fetch GET /api/auth/profile and populate fields.
+- [ ] Implement edit toggle with cancel semantics (revert to last saved values).
+- [ ] Validate full_name and phone client-side before submit.
+- [ ] Submit changes to PUT /api/auth/profile with JSON body containing changed fields.
+- [ ] Handle responses (success, validation errors, 401, 500) with clear user feedback.
+- [ ] If changing password is required, coordinate with backend to add secure password-change endpoint.
+
+13) Quick developer notes / hints
+- Use the backend fields `full_name` and `phone` exactly (the backend is expecting `full_name` not `fullName`).
+- The profile GET responds with `data.user` (not `data.profile`) — confirm client reads `json.data.user`.
+
+14) Contact points & follow-ups
+- If you need to implement password change: add a new controller method (e.g., changePassword) that verifies current password or implements secure flow.
+
+---
+
+End of instructions file.

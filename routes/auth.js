@@ -5,6 +5,7 @@ const {
   login,
   getProfile,
   updateProfile,
+  changePassword,
   getUsersByDepartment,
   getAllDepartments,
   getUsersWithFilters,
@@ -23,6 +24,7 @@ router.post('/login', validateLogin, handleValidationErrors, login);
 // Protected routes
 router.get('/profile', authenticateToken, getProfile);
 router.put('/profile', authenticateToken, updateProfile);
+router.post('/change-password', authenticateToken, changePassword);
 
 // Department-related routes (protected)
 router.get('/departments', authenticateToken, getAllDepartments);

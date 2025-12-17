@@ -75,6 +75,22 @@ const userSchema = new mongoose.Schema(
         one_time_used: { type: Boolean, default: false },
       },
     ],
+    // Track when password was last changed to allow JWT invalidation
+    password_changed_at: {
+      type: Date,
+    },
+    // Optional token version for token invalidation strategy
+    tokenVersion: {
+      type: Number,
+      default: 0,
+    },
+    // Optional password history to prevent reuse (store recent hashes)
+    password_history: [
+      {
+        hash: { type: String },
+        changedAt: { type: Date },
+      },
+    ],
   },
   {
     timestamps: true,
